@@ -75,7 +75,7 @@ const Hero = () => {
 
             <HeroText />
 
-         
+            <h1 className="special-font hero-heading absolute bottom-5 right-5  text-black">G<b>a</b>ming</h1>
 
         </div>
     );
