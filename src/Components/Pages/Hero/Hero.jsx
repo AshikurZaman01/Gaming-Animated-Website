@@ -1,9 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import HeroText from "./HeroText";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { initVideoAnimations } from "./HeroAnimation";
 
-gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -35,69 +33,43 @@ const Hero = () => {
     };
 
     useEffect(() => {
-        // GSAP hover effect
-        if (videoRef.current) {
-            gsap.fromTo(
-                videoRef.current,
-                { scale: 1, opacity: 1 },
-                {
-                    scale: 1.1,
-                    opacity: 0.8,
-                    duration: 0.3,
-                    ease: "power1.inOut",
-                    repeat: -1,
-                    yoyo: true,
-                }
-            );
-        }
-
-        // Reset animation on click
-        if (hasClicked) {
-            gsap.to(videoRef.current, {
-                scale: 0.8,
-                opacity: 0.3,
-                duration: 0.5,
-                ease: "power2.out",
-                onComplete: () => {
-                    setHasClicked(false);
-                },
-            });
-        }
-
-        gsap.set("#video-frame", {
-            clipPath: "polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)",
-            borderRadius: "0 0 40% 10%",
-        });
-
-        gsap.from("#video-frame", {
-            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-            borderRadius: "0 0 0 0",
-            ease: 'power1.inOut',
-            scrollTrigger: {
-                trigger: "#video-frame",
-                start: "center center",
-                end: 'bottom center',
-                scrub: true,
-            }
-        })
-
+        initVideoAnimations(videoRef, hasClicked, setHasClicked);
     }, [hasClicked]);
+
+    useEffect(() => {
+        if (loadedVideos === videoList.length - 1) {
+            setIsLoading(false);
+        }
+    }, [loadedVideos, videoList.length]);
 
     return (
         <div className="relative h-screen w-screen overflow-x-hidden bg-blue-50">
+            {isLoading && (
+                <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
+                    <div className="three-body">
+                        <div className="three-body__dot"></div>
+                        <div className="three-body__dot"></div>
+                        <div className="three-body__dot"></div>
+                    </div>
+                </div>
+            )}
+
             <div
                 id="video-frame"
                 className="relative z-10 h-screen w-screen overflow-hidden bg-blue-75 rounded-lg"
             >
-                <div className="absolute-center mask-clip-path z-50  cursor-pointer overflow-hidden rounded-lg  text-center">
-                    <div onClick={handleMiniVideoClip} className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100">
+                <div className="absolute-center mask-clip-path z-50 cursor-pointer overflow-hidden rounded-lg text-center">
+                    <div
+                        onClick={handleMiniVideoClip}
+                        className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100"
+                    >
                         <video
                             ref={nextVideoRef}
                             src={videoList[upCommingVideo]}
                             loop
                             muted
                             id="current-video"
-                            className=" w-72 origin-center scale-150 object-cover object-center"
+                            className="w-72 origin-center scale-150 object-cover object-center"
                             onCanPlay={handleVideoLoaded}
                             aria-label="Hero video"
                         />
@@ -126,7 +98,9 @@ const Hero = () => {
 
             <HeroText />
 
-            <h1 className="special-font hero-heading absolute bottom-5 right-5  text-black">G<b>a</b>ming</h1>
+            <h1 className="special-font hero-heading absolute bottom-5 right-5 text-black">
+                G<b>a</b>ming
+            </h1>
         </div>
     );
 };
