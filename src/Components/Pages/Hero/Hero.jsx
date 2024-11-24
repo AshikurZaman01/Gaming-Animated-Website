@@ -4,15 +4,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
-
 const Hero = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [hasClicked, setHasClicked] = useState(false);
     const [loadedVideos, setLoadedVideos] = useState(0);
 
-    const videoRef = useRef(null);
     const nextVideoRef = useRef(null);
+    const videoRef = useRef(null);
 
     const videoList = [
         "/src/assets/videos/hero-1.mp4",
@@ -21,11 +20,11 @@ const Hero = () => {
         "/src/assets/videos/hero-4.mp4",
     ];
 
-    const upcomingVideoIndex = (currentIndex + 1) % videoList.length;
+    const upCommingVideo = (currentIndex + 1) % videoList.length;
 
     const handleMiniVideoClip = () => {
         setHasClicked(true);
-        setCurrentIndex(upcomingVideoIndex);
+        setCurrentIndex(upCommingVideo);
     };
 
     const handleVideoLoaded = () => {
@@ -36,39 +35,53 @@ const Hero = () => {
     };
 
     useEffect(() => {
-        // GSAP animations for video and text
+        // GSAP hover effect
+        if (videoRef.current) {
+            gsap.fromTo(
+                videoRef.current,
+                { scale: 1, opacity: 1 },
+                {
+                    scale: 1.1,
+                    opacity: 0.8,
+                    duration: 0.3,
+                    ease: "power1.inOut",
+                    repeat: -1,
+                    yoyo: true,
+                }
+            );
+        }
 
-        // Polygon clip path animation for video container
+        // Reset animation on click
+        if (hasClicked) {
+            gsap.to(videoRef.current, {
+                scale: 0.8,
+                opacity: 0.3,
+                duration: 0.5,
+                ease: "power2.out",
+                onComplete: () => {
+                    setHasClicked(false);
+                },
+            });
+        }
+
         gsap.set("#video-frame", {
             clipPath: "polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)",
+            borderRadius: "0 0 40% 10%",
         });
 
         gsap.from("#video-frame", {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+            borderRadius: "0 0 0 0",
+            ease: 'power1.inOut',
             scrollTrigger: {
                 trigger: "#video-frame",
                 start: "center center",
-                end: "bottom center",
+                end: 'bottom center',
                 scrub: true,
-            },
-        });
+            }
+        })
 
-        // Black text clip-path animation
-        gsap.set(".black-text", {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", // Initially hidden
-        });
-
-        gsap.to(".black-text", {
-            clipPath: "polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)", // Reveal the text as polygon animates
-            scrollTrigger: {
-                trigger: "#video-frame",
-                start: "top top",
-                end: "bottom center",
-                scrub: true,
-            },
-        });
-
-    }, [loadedVideos]); // Dependency to ensure the loadedVideos state updates
+    }, [hasClicked]);
 
     return (
         <div className="relative h-screen w-screen overflow-x-hidden bg-blue-50">
@@ -76,41 +89,44 @@ const Hero = () => {
                 id="video-frame"
                 className="relative z-10 h-screen w-screen overflow-hidden bg-blue-75 rounded-lg"
             >
-                {/* Next video preview */}
-                <div
-                    className="absolute-center mask-clip-path z-50 cursor-pointer overflow-hidden rounded-lg text-center"
-                    onClick={handleMiniVideoClip}
-                >
-                    <video
-                        ref={nextVideoRef}
-                        src={videoList[upcomingVideoIndex]}
-                        loop
-                        muted
-                        onLoadedData={handleVideoLoaded}
-                        className="w-72 origin-center scale-150 object-cover object-center opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100"
-                        aria-label="Hero video preview"
-                    />
+                <div className="absolute-center mask-clip-path z-50  cursor-pointer overflow-hidden rounded-lg  text-center">
+                    <div onClick={handleMiniVideoClip} className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100">
+                        <video
+                            ref={nextVideoRef}
+                            src={videoList[upCommingVideo]}
+                            loop
+                            muted
+                            id="current-video"
+                            className=" w-72 origin-center scale-150 object-cover object-center"
+                            onCanPlay={handleVideoLoaded}
+                            aria-label="Hero video"
+                        />
+                    </div>
                 </div>
 
-                {/* Main video */}
+                <video
+                    ref={nextVideoRef}
+                    src={videoList[currentIndex]}
+                    loop
+                    muted
+                    id="next-video"
+                    className="absolute-center invisible absolute z-20 w-72 object-cover object-center"
+                    onLoadedData={handleVideoLoaded}
+                />
+
                 <video
                     ref={videoRef}
-                    src={videoList[currentIndex]}
+                    src={videoList[currentIndex === videoList.length - 1 ? 0 : currentIndex]}
                     loop
                     autoPlay
                     muted
-                    onLoadedData={handleVideoLoaded}
                     className="absolute left-0 top-0 w-full object-cover object-center video-fullscreen"
                 />
             </div>
 
-            {/* Hero text */}
             <HeroText />
 
-            {/* Black text (initially hidden) */}
-            <h1 className="special-font hero-heading absolute inline-block bottom-5 right-5 z-30 black-text text-black">
-                G<b>a</b>ming
-            </h1>
+            <h1 className="special-font hero-heading absolute bottom-5 right-5  text-black">G<b>a</b>ming</h1>
         </div>
     );
 };
