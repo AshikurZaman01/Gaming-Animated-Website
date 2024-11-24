@@ -1,12 +1,15 @@
 import { useRef, useState, useEffect } from "react";
 import HeroText from "./HeroText";
+import gsap from "gsap";
 
 const Hero = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [hasClicked, setHasClicked] = useState(false);
     const [loadedVideos, setLoadedVideos] = useState(0);
     const nextVideoRef = useRef(null);
-
+    const currentVideoRef = useRef(null);
+    const videoRef = useRef(null); // reference for the video element to apply GSAP effects
 
     const videoList = [
         "/src/assets/videos/hero-1.mp4",
@@ -15,10 +18,11 @@ const Hero = () => {
         "/src/assets/videos/hero-4.mp4",
     ];
 
-    const upCommingVideo = (currentIndex % videoList.length) + 1;
+    const upCommingVideo = (currentIndex + 1) % videoList.length;
 
     const handleMiniVideoClip = () => {
-        setCurrentIndex(upCommingVideo)
+        setHasClicked(true);
+        setCurrentIndex(upCommingVideo);
     };
 
     const handleVideoLoaded = () => {
@@ -29,8 +33,35 @@ const Hero = () => {
     };
 
     useEffect(() => {
-        console.log("Updated Index:", currentIndex);
-    }, [currentIndex]);
+        // GSAP hover effect
+        if (videoRef.current) {
+            gsap.fromTo(
+                videoRef.current,
+                { scale: 1, opacity: 1 },
+                {
+                    scale: 1.1,
+                    opacity: 0.8,
+                    duration: 0.3,
+                    ease: "power1.inOut",
+                    repeat: -1,
+                    yoyo: true,
+                }
+            );
+        }
+
+        // Reset animation on click
+        if (hasClicked) {
+            gsap.to(videoRef.current, {
+                scale: 0.8,
+                opacity: 0.3,
+                duration: 0.5,
+                ease: "power2.out",
+                onComplete: () => {
+                    setHasClicked(false); // reset after animation
+                },
+            });
+        }
+    }, [hasClicked]);
 
     return (
         <div className="relative h-screen w-screen overflow-x-hidden bg-blue-50">
@@ -59,24 +90,23 @@ const Hero = () => {
                     loop
                     muted
                     id="next-video"
-                    className="absolute-center invisible absolute z-20 size-64  object-cover object-center"
-                    onLoadedData={handleVideoLoaded} />
+                    className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
+                    onLoadedData={handleVideoLoaded}
+                />
 
                 <video
+                    ref={videoRef} // Assign the ref here
                     src={videoList[currentIndex === videoList.length - 1 ? 0 : currentIndex]}
                     loop
                     autoPlay
                     muted
                     className="absolute left-0 top-0 size-full object-cover object-center video-fullscreen"
                 />
-
             </div>
-
 
             <HeroText />
 
             <h1 className="special-font hero-heading absolute bottom-5 right-5  text-black">G<b>a</b>ming</h1>
-
         </div>
     );
 };
