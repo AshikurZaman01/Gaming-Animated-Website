@@ -69,7 +69,7 @@ const Hero = () => {
                 id="video-frame"
                 className="relative z-10 h-screen w-screen overflow-hidden bg-blue-75 rounded-lg"
             >
-                <div className="absolute-center mask-clip-path z-50 cursor-pointer overflow-hidden rounded-lg  text-center">
+                <div className="absolute-center mask-clip-path z-50  cursor-pointer overflow-hidden rounded-lg  text-center">
                     <div onClick={handleMiniVideoClip} className="origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100">
                         <video
                             ref={nextVideoRef}
@@ -77,7 +77,7 @@ const Hero = () => {
                             loop
                             muted
                             id="current-video"
-                            className="size-64 origin-center scale-150 object-cover object-center"
+                            className=" w-72 origin-center scale-150 object-cover object-center"
                             onCanPlay={handleVideoLoaded}
                             aria-label="Hero video"
                         />
@@ -90,7 +90,7 @@ const Hero = () => {
                     loop
                     muted
                     id="next-video"
-                    className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
+                    className="absolute-center invisible absolute z-20 w-72 object-cover object-center"
                     onLoadedData={handleVideoLoaded}
                 />
 
@@ -100,7 +100,7 @@ const Hero = () => {
                     loop
                     autoPlay
                     muted
-                    className="absolute left-0 top-0 size-full object-cover object-center video-fullscreen"
+                    className="absolute left-0 top-0 w-full object-cover object-center video-fullscreen"
                 />
             </div>
 
