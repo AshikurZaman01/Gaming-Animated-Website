@@ -2,6 +2,9 @@ import { useState, useRef } from "react";
 import { TiLocationArrow } from "react-icons/ti";
 import FTitle from "./FTitle";
 import Bento from "./BentoCard/Bento";
+import BentoCard from "./BentoCard/BentoCard";
+import Zigma from "./zigma/zigma";
+
 
 const Features = () => {
     return (
@@ -11,7 +14,9 @@ const Features = () => {
 
                 <Bento></Bento>
 
-              
+                <Zigma></Zigma>
+
+
             </div>
         </section>
     );
