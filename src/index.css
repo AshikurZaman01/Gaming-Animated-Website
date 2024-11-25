@@ -35,7 +35,7 @@
     }
   
     .nav-hover-btn {
-      @apply relative ms-10 font-general text-xs uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-neutral-800 after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
+      @apply relative ms-10 font-general text-xs uppercase text-blue-50 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:after:origin-bottom-left hover:after:scale-x-100 dark:after:bg-white cursor-pointer;
     }
   
     .floating-nav {
@@ -64,12 +64,13 @@
     }
   
     .about-subtext {
-      @apply absolute bottom-[-80dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-lg md:max-w-[34rem];
+      @apply absolute bottom-[-80dvh] left-1/2 w-full max-w-[24rem] -translate-x-1/2 text-center font-circular text-lg md:max-w-[34rem];
     }
   
     .about-image {
-      @apply absolute left-1/2 top-0 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-3xl md:w-[30vw];
-    }
+      @apply absolute left-1/2 top-1/2 z-20 origin-center -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-3xl md:w-[30vw];
+  }
+  
   
     .animated-title {
       @apply flex flex-col gap-1 text-7xl uppercase leading-[.8] text-white sm:px-32 md:text-[6rem];
@@ -168,15 +169,15 @@ body{
 
 /* Add this to your CSS file */
 .video-fullscreen {
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
-    object-fit: cover; /* Ensures the video fills the container while maintaining aspect ratio */
-    object-position: center; /* Centers the video content */
+    width: 100vw; 
+    height: 100vh; 
+    object-fit: cover; 
+    object-position: center; 
 }
 
-/* Adjust for small devices using media queries */
 @media (max-width: 768px) {
     .video-fullscreen {
-        height: 100%; /* Adjusts height for smaller screens */
+        height: 100%; 
     }
 }
+

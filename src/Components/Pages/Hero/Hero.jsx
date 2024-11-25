@@ -3,6 +3,7 @@ import HeroText from "./HeroText";
 import { initVideoAnimations } from "./HeroAnimation";
 
 const Hero = () => {
+    
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [hasClicked, setHasClicked] = useState(false);
@@ -44,6 +45,7 @@ const Hero = () => {
 
     return (
         <div className="relative h-screen w-screen overflow-x-hidden bg-blue-50">
+           
             {isLoading && (
                 <div className="flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
                     <div className="three-body">

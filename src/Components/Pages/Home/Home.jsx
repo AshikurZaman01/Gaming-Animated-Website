@@ -1,3 +1,4 @@
+import About from "../About/About";
 import Hero from "../Hero/Hero";
 
 const Home = () => {
@@ -5,7 +6,9 @@ const Home = () => {
         <div>
             <Hero />
 
-            <section className="min-h-screen"></section>
+            <About />
+
+
         </div>
     );
 };
