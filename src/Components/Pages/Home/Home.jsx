@@ -1,6 +1,7 @@
 import About from "../About/About";
 import Features from "../Features/Features";
 import Hero from "../Hero/Hero";
+import Story from "../Story/Story";
 
 const Home = () => {
     return (
@@ -9,10 +10,8 @@ const Home = () => {
 
 
             <Features />
-            
-            <div className="min-h-screen">
 
-            </div>
+            <Story />
 
         </div>
     );

@@ -9,7 +9,7 @@ const Bento = () => {
                     src={video1}
                     title={<><b>radi</b>n</>}
                     description="A cross-platform metagame app, turning your activities across Web2 and Web3 games into a rewarding adventure."
-                    isCommingSoon={true}
+                    isCommingSoon
                 />
             </div>
         </div>
